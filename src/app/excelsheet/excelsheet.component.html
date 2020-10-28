@@ -1,0 +1,91 @@
+<p>excelsheet works!</p>
+<br>
+
+
+<div class="col-md-8 form-group">        
+    <input type="file" class="form-control" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">        
+  </div>  
+<!--        
+<table>
+    <tbody>
+        <tr *ngFor="let row of data">
+                <td *ngFor="let cell of row">
+                        {{cell}}
+                </td>
+        </tr>
+    </tbody>
+</table>
+-->
+<!--   
+<p-table  #dt [value]="data2" dataKey="id"
+[rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"  styleClass="p-datatable-customers"
+[paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>#</th>
+            
+            <th>TRF</th>
+            <th>NOMBRE</th>
+            <th>DIRECCIÓN</th>
+            <th>NRO_O/S</th>
+            <th>CLIENTE</th>
+            <th>MEDIDOR</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="caption">
+        <div class="table-header">
+            List of Customers
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="filroGlobal($event.target.value)" placeholder="Global Search" />
+            </span>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+        <tr>
+            <td *ngFor="let productito of product">{{productito}}</td>
+           
+        </tr>
+    </ng-template>
+</p-table>
+-->
+
+<p-table #dt2  [value]="filelist" dataKey="id"
+[rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"  styleClass="p-datatable-customers"
+[paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [globalFilterFields]="['MEDIDOR', 'NOMBRE']">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>#</th>
+            
+            <th>TRF</th>
+            <th>NOMBRE</th>
+            <th>DIRECCIÓN</th>
+            <th>NRO_ORDEN</th>
+            <th>CLIENTE</th>
+            <th>MEDIDOR</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="caption">
+        <div class="table-header">
+            List of Customers
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+            </span>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="body" let-i="rowIndex" let-corte>
+        <tr>
+            <td>{{i+1}}</td>
+            <td>{{corte.TRF}}</td>
+            <TD>{{corte.NOMBRE}}</TD>
+            <td>{{corte.DIRECCION}}</td>
+            <TD>{{corte.NRO_ORDEN}}</TD>
+            <td>{{corte.CLIENTE}}</td>
+            <TD>{{corte.MEDIDOR}}</TD>
+           
+        </tr>
+    </ng-template>
+</p-table>
+
+
