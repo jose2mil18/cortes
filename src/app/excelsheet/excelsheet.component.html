@@ -1,10 +1,21 @@
-<p>excelsheet works!</p>
-<br>
 
-
-<div class="col-md-8 form-group">        
-    <input type="file" class="form-control" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">        
-  </div>  
+ 
+<div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <ng-select [(ngModel)]="nro_hoja">
+            <ng-option *ngFor="let car of [0,1,2,3,4,5,6,7,8,9,10]" [value]="car">Hoja {{car+1}}</ng-option>
+         </ng-select>
+      </div>
+      <div class="col-sm">
+        <input type="file" class="form-control" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">        
+    
+      </div>
+      <div class="col-sm">
+       
+      </div>
+    </div>
+  </div>
 <!--        
 <table>
     <tbody>
@@ -49,29 +60,53 @@
     </ng-template>
 </p-table>
 -->
-
+<div class="tablehor">
 <p-table #dt2  [value]="filelist" dataKey="id"
-[rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"  styleClass="p-datatable-customers"
+[rows]="5" responsive-scrolling [showCurrentPageReport]="true" selectionMode="single" [scrollable]="true"  [rowsPerPageOptions]="[5,10,25,50]"   class="p-datatable-responsive-demo"
 [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [globalFilterFields]="['MEDIDOR', 'NOMBRE']">
-    <ng-template pTemplate="header">
+<ng-template pTemplate="colgroup" let-columns>
+    <colgroup>
+        <col style="width:50px">
+        <col style="width:50px">
+        <col style="width:200px">
+        <col style="width:200px">
+        <col style="width:100px">
+        <col style="width:100px">
+        <col style="width:100px">
+        <col style="width:90px">
+        <col style="width:90px">
+        <col style="width:50px">
+    </colgroup>
+</ng-template>
+<ng-template pTemplate="header">
         <tr>
-            <th>#</th>
+            <th style="width: 6%;">#</th>
             
-            <th>TRF</th>
+            <th style="width: 6%;">TRF</th>
             <th>NOMBRE</th>
             <th>DIRECCIÓN</th>
             <th>NRO_ORDEN</th>
             <th>CLIENTE</th>
             <th>MEDIDOR</th>
+            <th style="width:8%">HORA</th>
+            <th style="width:8%">LECTURA</th>
+            <th>EDIT</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="caption">
         <div class="table-header">
-            List of Customers
-            <span class="p-input-icon-left">
+            <h3>Lista de Cortes</h3>
+            <br>
+            <ng-container style="float:right">
+                <span class="p-input-icon-left">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')" placeholder="Global Search"  />
             </span>
+            <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success p-mr-2"  pTooltip="XLS" title="Exportar a excel" tooltipPosition="bottom" style="float:right"></button>
+           
+            </ng-container>
+           
+            
         </div>
     </ng-template>
     <ng-template pTemplate="body" let-i="rowIndex" let-corte>
@@ -83,9 +118,41 @@
             <TD>{{corte.NRO_ORDEN}}</TD>
             <td>{{corte.CLIENTE}}</td>
             <TD>{{corte.MEDIDOR}}</TD>
+            <td>{{corte.HORA}}</td>
+            <td>{{corte.LECTURA}}</td>
+            <td style="text-align: center">
+                <button pButton type="button" class="p-button-secondary" icon="pi pi-pencil" (click)="showBasicDialog(corte)"></button>
+            </td>
            
         </tr>
     </ng-template>
 </p-table>
+</div>
+<p-dialog header="Corte" [(visible)]="displayBasic" [style]="{width: '50vw'}" [baseZIndex]="10000">
+    <form>
+        <div class="form-group row">
+          <label for="staticEmail" class="col-sm-2 col-form-label">Nombre</label>
+          <div class="col-sm-10">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" [value]="corte.NOMBRE">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-2 col-form-label">Hora</label>
+          <div class="col-sm-10">
+            <input type="time" class="form-control" id="inputPassword" [(ngModel)]="corte.HORA" name="hora" placeholder="Password">
+          </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Lectura</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="inputPassword" [(ngModel)]="corte.LECTURA" name = "lectura" placeholder="Lectura">
+            </div>
+          </div>
+      </form>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="guardar()" label="Guardar" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>
+
 
 

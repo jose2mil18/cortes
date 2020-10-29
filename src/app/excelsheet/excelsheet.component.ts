@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
 import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 interface HtmlInputEvent extends Event {
   target: HTMLInputElement & EventTarget;
 }
@@ -8,9 +9,10 @@ declare const convertir:any;
 @Component({
   selector: 'app-excelsheet',
   templateUrl: './excelsheet.component.html',
-  styleUrls: ['./excelsheet.component.css']
+  styleUrls: ['./excelsheet.component.css'],
 })
 export class ExcelsheetComponent implements OnInit {
+  nro_hoja:number=0;
   arrayBuffer:any
   file:File=null
   filelist:any[];
@@ -18,7 +20,28 @@ products=["Arroz", "Huevo"]
   data: [][];
   data2:any[][]=new Array()
   @ViewChild('dt') table: Table;
-  constructor() { }
+  displayBasic: boolean;
+
+  corte:any;
+ 
+  showBasicDialog(corte) {
+    this.corte=corte
+  
+    this.displayBasic = true;
+  }
+  guardar(){
+    console.log(this.corte);
+    
+    this.displayBasic = false;
+  }
+
+  constructor() {
+    this.corte={
+      NOMBRE:'',
+      HORA:'',
+      LECTURA:''
+    }
+   }
 
   ngOnInit(): void {
   }
@@ -101,7 +124,7 @@ oReq.responseType = "arraybuffer";
       for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);    
       var bstr = arr.join("");    
       var workbook = XLSX.read(bstr, {type:"binary"});    
-      var first_sheet_name = workbook.SheetNames[0];    
+      var first_sheet_name = workbook.SheetNames[this.nro_hoja];    
       var worksheet = workbook.Sheets[first_sheet_name];    
       console.log(XLSX.utils.sheet_to_json(worksheet,{raw:true}));    
         var arraylist = XLSX.utils.sheet_to_json(worksheet,{raw:true});     
@@ -191,4 +214,22 @@ console.log(c);
 
 
  }
+ exportExcel() {
+  import("xlsx").then(xlsx => {
+      const worksheet = xlsx.utils.json_to_sheet(this.filelist);
+      const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFile(excelBuffer, "cortes");
+  });
+}
+saveAsExcelFile(buffer: any, fileName: string): void {
+  import("file-saver").then(FileSaver => {
+      let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+      let EXCEL_EXTENSION = '.xlsx';
+      const data: Blob = new Blob([buffer], {
+          type: EXCEL_TYPE
+      });
+      FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  });
+}
 }
