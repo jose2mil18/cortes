@@ -63,7 +63,7 @@
 <div class="tablehor">
 <p-table #dt2  [value]="filelist" dataKey="id"
 [rows]="5" responsive-scrolling [showCurrentPageReport]="true" selectionMode="single" [scrollable]="true"  [rowsPerPageOptions]="[5,10,25,50]"   class="p-datatable-responsive-demo"
-[paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [globalFilterFields]="['MEDIDOR', 'NOMBRE']">
+[paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [globalFilterFields]="['Medidor', 'Nombre']">
 <ng-template pTemplate="colgroup" let-columns>
     <colgroup>
         <col style="width:50px">
@@ -82,14 +82,14 @@
         <tr>
             <th style="width: 6%;">#</th>
             
-            <th style="width: 6%;">TRF</th>
-            <th>NOMBRE</th>
-            <th>DIRECCIÓN</th>
-            <th>NRO_ORDEN</th>
-            <th>CLIENTE</th>
-            <th>MEDIDOR</th>
-            <th style="width:8%">HORA</th>
-            <th style="width:8%">LECTURA</th>
+            <th style="width: 6%;">Ruta</th>
+            <th>Nombre</th>
+            <th>Categoria</th>
+            <th>Medidor</th>
+            <th>Orden</th>
+            <th>Cliente_Lec</th>
+            <th style="width:8%">t_Anteri</th>
+            <th style="width:8%">Lect_Actual</th>
             <th>EDIT</th>
         </tr>
     </ng-template>
@@ -112,14 +112,14 @@
     <ng-template pTemplate="body" let-i="rowIndex" let-corte>
         <tr>
             <td>{{i+1}}</td>
-            <td>{{corte.TRF}}</td>
-            <TD>{{corte.NOMBRE}}</TD>
-            <td>{{corte.DIRECCION}}</td>
-            <TD>{{corte.NRO_ORDEN}}</TD>
-            <td>{{corte.CLIENTE}}</td>
-            <TD>{{corte.MEDIDOR}}</TD>
-            <td>{{corte.HORA}}</td>
-            <td>{{corte.LECTURA}}</td>
+            <td>{{corte.Ruta}}</td>
+            <TD>{{corte.Nombre}}</TD>
+            <td>{{corte.Categoria}}</td>
+            <TD>{{corte.Medidor}}</TD>
+            <td>{{corte.Orden}}</td>
+            <TD>{{corte.Cliente_Lec}}</TD>
+            <td>{{corte.t_Anteri}}</td>
+            <td>{{corte.Lect_Actual}}</td>
             <td style="text-align: center">
                 <button pButton type="button" class="p-button-secondary" icon="pi pi-pencil" (click)="showBasicDialog(corte)"></button>
             </td>
@@ -133,19 +133,20 @@
         <div class="form-group row">
           <label for="staticEmail" class="col-sm-2 col-form-label">Nombre</label>
           <div class="col-sm-10">
-            <input type="text" readonly class="form-control-plaintext" id="staticEmail" [value]="corte.NOMBRE">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" [value]="corte.Nombre">
           </div>
         </div>
         <div class="form-group row">
-          <label for="inputPassword" class="col-sm-2 col-form-label">Hora</label>
+          <label for="inputPassword" class="col-sm-2 col-form-label">Codigo</label>
           <div class="col-sm-10">
-            <input type="time" class="form-control" id="inputPassword" [(ngModel)]="corte.HORA" name="hora" placeholder="Password">
+            <input type="text" class="form-control" id="inputPassword" [(ngModel)]="corte.Codigo" name="hora" placeholder="">
           </div>
         </div>
+        
         <div class="form-group row">
-            <label for="inputPassword" class="col-sm-2 col-form-label">Lectura</label>
+            <label for="inputPassword" class="col-sm-2 col-form-label">Lect_Actual</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="inputPassword" [(ngModel)]="corte.LECTURA" name = "lectura" placeholder="Lectura">
+              <input type="text" class="form-control" id="inputPassword" [(ngModel)]="corte.Lect_Actual" name = "lectura" placeholder="">
             </div>
           </div>
       </form>
